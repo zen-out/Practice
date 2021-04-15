@@ -21,19 +21,36 @@
   <body>
     <main class="scroll-container">
       <section>
-        <h2>Section 1</h2>
+        <h2 class="fade">Section 1</h2>
       </section>
       <section>
-        <h2>Section 2</h2>
+        <h2 class="fade">Section 1</h2>
       </section>
       <section>
         <h2>Section 3</h2>
       </section>
       <section>
-        <h2>Section 4</h2>
+        <div data-aos="fade-in">
+          <h2>Section 4</h2>
+          <span>hello</span>
+        </div>
       </section>
     </main>
 
+    <!-- Fade In -->
+    <div>
+      <div class="fade">Fade In 01</div>
+      <div class="fade">Fade In 02</div>
+      <div class="fade">Fade In 03</div>
+      <div class="fade">Fade In 04</div>
+      <div class="fade">Fade In 05</div>
+      <div class="fade">Fade In 06</div>
+      <div class="fade">Fade In 07</div>
+      <div class="fade">Fade In 08</div>
+      <div class="fade">Fade In 09</div>
+      <div class="fade">Fade In 10</div>
+    </div>
+    <!-- Fade In -->
     <script
       src="https://code.jquery.com/jquery-3.5.1.js"
       integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
@@ -51,7 +68,7 @@
       crossorigin="anonymous"
     ></script>
     <script
-      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
       integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
       crossorigin="anonymous"
     ></script>
@@ -62,39 +79,35 @@
     ></script>
 
     <script async defer>
-      // Test
-      const sections = [
-        ...document.querySelectorAll("section"),
-      ];
+      // Scroll
+      console.log("hello");
+      $(window).on("load", function () {
+        $(window)
+          .scroll(function () {
+            var windowBottom =
+              $(this).scrollTop() + $(this).innerHeight();
+            $(".fade").each(function () {
+              /* Check the location of each desired element */
+              var objectBottom =
+                $(this).offset().top +
+                $(this).outerHeight();
 
-      let options = {
-        rootMargin: "0px",
-        threshold: 0.25,
-      };
-
-      const callback = (entries, observer) => {
-        entries.forEach((entry) => {
-          const { target } = entry;
-          console.log(entry, target);
-
-          if (entry.intersectionRatio >= 0.25) {
-            target.classList.add("is-visible");
-          } else {
-            target.classList.remove("is-visible");
-          }
-        });
-      };
-
-      const observer = new IntersectionObserver(
-        callback,
-        options
-      );
-
-      sections.forEach((section, index) => {
-        observer.observe(section);
+              /* If the element is completely within bounds of the window, fade it in */
+              if (objectBottom < windowBottom) {
+                //object comes into view (scrolling down)
+                if ($(this).css("opacity") == 0) {
+                  $(this).fadeTo(500, 1);
+                }
+              } else {
+                //object goes out of view (scrolling up)
+                if ($(this).css("opacity") == 1) {
+                  $(this).fadeTo(500, 0);
+                }
+              }
+            });
+          })
+          .scroll(); //invoke scroll-handler on page-load
       });
-
-      window.onload(removeClass());
     </script>
   </body>
 </html>
